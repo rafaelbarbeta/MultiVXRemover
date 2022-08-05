@@ -3,15 +3,15 @@ import yara
 import datetime
 from shutil import rmtree
 # This class main job is to manage yara rules and compiled rules
-class MalwareSignatures:
+class RulesManagement:
     CRULES = "MultiVXRemoverCompiled" #directory of compiled rules
     def __init__(self,cwd):
         self.cRulesList = [] #list of path to the compiled rules
         self.currentDirectory = cwd
-        self.cRulesDir = os.path.join(self.currentDirectory,MalwareSignatures.CRULES)
+        self.cRulesDir = os.path.join(self.currentDirectory,RulesManagement.CRULES)
         if not os.path.exists(self.currentDirectory):
-            os.mkdir(MalwareSignatures.CRULES)
-        for root,dir,files in os.walk(self.currentDirectory,topdown=True): #load all already compiled rules to memory
+            os.mkdir(RulesManagement.CRULES)
+        for root,dir,files in os.walk(self.cRulesDir,topdown=True): #load all already compiled rules to memory
             for fileNames in files:
                 self.cRulesList.append(os.path.join(root,fileNames))
 
@@ -48,3 +48,6 @@ class MalwareSignatures:
         return
     def getCRulesList(self):
         return self.cRulesList
+    # getter for current directory
+    def getCurrentDirectory(self):
+        return self.currentDirectory
