@@ -9,7 +9,7 @@ class RulesManagement:
         self.cRulesList = [] #list of path to the compiled rules
         self.currentDirectory = cwd
         self.cRulesDir = os.path.join(self.currentDirectory,RulesManagement.CRULES)
-        if not os.path.exists(self.currentDirectory):
+        if not os.path.exists(self.cRulesDir):
             os.mkdir(RulesManagement.CRULES)
         for root,dir,files in os.walk(self.cRulesDir,topdown=True): #load all already compiled rules to memory
             for fileNames in files:
@@ -37,7 +37,7 @@ class RulesManagement:
             return
         newCrulesName = os.path.basename(rulePath)
         newCrules = os.path.join(newCrulesDir,newCrulesName)
-        yara.save(newCrules)
+        newCruleObj.save(newCrules)
         return newCrules
     #remove a "pack" of rules
     def removeRules(self,dirID):
