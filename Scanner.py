@@ -7,7 +7,6 @@ class Scanner:
         self.rulesM = rulesM
         self.quarantine = quarantine
         self.dictMatches = {}
-        #reminder: counter for files scanned and actual threats detected!
 
     def malwareFound(self,data):
         return yara.CALLBACK_ABORT
@@ -19,9 +18,9 @@ class Scanner:
             singleRuleFile = yara.load(cRulesList[i])
             match = singleRuleFile.match(filePath,callback=self.malwareFound,which_callbacks=yara.CALLBACK_MATCHES)
             if len(match) != 0:
-                self.dictMatches.update({file : match[0]}) #not sure 0 is the field of match
+                self.dictMatches.update({file : match[0]})
                 self.quarantineFile(file)
-                return (file,match[0]) # returns a tupple with the file and 
+                return (file,match[0])
         return
 
     def scanDirectory(self,dir):
@@ -40,7 +39,3 @@ class Scanner:
         matches = self.dictMatches.copy()
         self.dictMatches = {}
         return matches
-
-
-
-
