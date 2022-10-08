@@ -12,7 +12,7 @@ def main():
     op = "none"
     while True:
             try :
-                print("Please choose de options Below:")
+                print("Please choose an option below:")
                 print("1) scan <directory>")
                 print("2) addRules <directory>")
                 print("3) hashScan <directory>")
