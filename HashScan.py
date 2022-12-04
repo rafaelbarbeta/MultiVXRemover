@@ -61,8 +61,8 @@ class HashScan:
             for hash in filesHash:
                 if hash in hashSet:
                     filesInfected.append(files2Scan[indexOf(filesHash,hash)])
-                    files2Scan.remove(indexOf(filesHash,hash))
-                    filesHash.remove(indexOf(filesHash,hash))
+                    files2Scan.pop(indexOf(filesHash,hash))
+                    filesHash.remove(hash)
         
         return filesInfected
     
