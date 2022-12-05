@@ -351,3 +351,10 @@ MigrationBackup/
 
 # HashScan hashSet files
 hashSets
+
+# HashScan BD file
+hashDB.db
+
+#Other junk files
+teste
+VirusShareHashes

@@ -35,7 +35,7 @@ def main():
                         print(file + " : Malware")
                     totalDetected = len(filesInfected)
                     totalChecked = hashScan.getFilesChecked()
-                    percentOfDetection = totalDetected / totalChecked
+                    percentOfDetection = (totalDetected / totalChecked) * 100
                     print("Results : ")
                     print("Detected " + str(totalDetected) + " out of " + str(totalChecked) + " as malware")
                     print(str(percentOfDetection) + "%")

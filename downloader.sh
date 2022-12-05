@@ -8,7 +8,8 @@ for i in $(seq -w 0 99999) ; do
     nexturl+=$url
     nexturl+=$i
     nexturl+=".md5"
-    if [$(wget $nexturl) -ne 0 ] ; then
+    wget $nexturl
+    if [ $? -ne 0 ] ; then
         break
     fi
 done
