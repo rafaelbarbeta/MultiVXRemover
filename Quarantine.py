@@ -44,16 +44,20 @@ class Quarantine:
             fileFields = target.read().split(b":")
             decodedFile = base64.b64decode(fileFields[0])
             originalPath = fileFields[1].decode("utf-8")
-        with open(originalPath,"wb") as target:
-            target.write(decodedFile)
-        os.remove(filePathQuarantine)
+        if os.path.exists(os.path.split(originalPath)[0]):
+            with open(originalPath,"wb") as target:
+                target.write(decodedFile)
+            os.remove(filePathQuarantine)
+        else:
+            with open(filePathQuarantine,"wb") as target:
+                target.write(decodedFile)
     
-    def removeFile(self,filePath):
+    def removeFile(self,file):
         """
         Delete a quarantined file
-        'file' is a file path
+        'file' is a file name
         """
-        os.remove(filePath)
+        os.remove(os.path.join(self.cwd,self.quarantineDir,file))
     
     def getQuarantinedFiles(self):
         """
