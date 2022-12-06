@@ -30,10 +30,6 @@ class Scanner:
                 self.scanFile(os.path.join(root,fileNames))
         return self.getMatches()
                 
-
-    def quarantineFile(self,file):
-        pass
-
     def getMatches(self):
         # returns the matches dictionary and destroys the original
         matches = self.dictMatches.copy()
