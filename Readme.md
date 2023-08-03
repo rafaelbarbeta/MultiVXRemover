@@ -9,22 +9,22 @@ Dois tipos de assinatura são utilizados para detecção de software maliciosos 
 * Regras YARA: consiste em um conjunto de expressões regulares aplicadas ao binário. Consegue dar "match" tanto em bytes "raw", strings de texto e combinar os diferentes "matches" que ocorreram com expressões lógicas. É o mecanismo principal de detecção. Consegue detectar malwares e possíveis "variantes" desse software malicioso. 
 * Hash MD5: O hash é como uma "somatório do conteúdo de um arquivo". A função hash, no caso o MD5, recebe um arquivo de tamanho arbitrário e produz uma string fixa que é potencialmente exclusiva para esse arquivo. É bastante inflexível, uma mínima alteração muda completamente o hash, sendo muito específica para indetificar um sofware único. A vantagem é que apenas softwares já catalogados com esse hash serão efetivamente detectados, com menor probabilidade de um "match" errôneo
 
+A interface do programa é inteiramente textual. Apoós a execução, será fornecido um terminal para inserção dos comandos, que seguem o padrão:
+nome_comando < parâmetro >
+
+As ações disponíveis são:
+
+## Pré-requisitos e recursos utilizados
+O MultiVXRemover foi feito inteiramente em pyhton, sendo necesssário um interpretador da linguagem para poder executar o programa.
+Foram utiladaz as seguintes bibliotecas
+* OS, para operar com arquivos. Padrão do python
+* lib-yara, biblioteca que da suporte as regras yara
+* yara-python, integração da biblioteca com python
+* sqlite3, para construção do BD de hashes md5.Padrão do python
+
 O projeto inclui um set de regras YARA obtidos da Reversing LABS. O projeto original pode ser encontrado [nesse link](https://github.com/reversinglabs/reversinglabs-yara-rules)
 
 Além disso, inclui um "scraper" downloader.sh para hashes MD5 do site vírus share. Há uma coleção **gigantesca** de assinaturas de vírus coletadas da internet. O download de todos os arquivos pode demorar algum tempo, mas se desejar, adicione sesu próprios hashes para teste.
-  
-## Pré-requisitos e recursos utilizados
-Citação das linguagens, bibliotecas, peças de hardware, e outras coisas que o grupo utilizou para realizar o projeto. Não é necessário explicar qual foi o uso exato de cada coisa no projeto. Bibliotecas e recursos padrões das tecnologias utilizadas não precisam ser citados (ex: stdio.h, iostream.h, etc.).
-
-Se alguma biblioteca externa ou código de outra pessoa foi utilizado como recurso, é importante citar a fonte de onde vocês retiraram (pode ser o link no Github, ou tutorial usado como referência).
-
-### Exemplo:
-
-O grupo utilizou a linguagem C para desenvolver a implementação geral do projeto, além de importar as seguintes bibliotecas:
-1. abcdzd.h
-2. exemplo.h, disponível em [IstoEhApenasUmExemplo](https://github.com/istoehapenasumexemplo/minhabiblioteca)
-
-Também foi utilizado o tutorial disponível em [IstoEhOutroExemplo](https://github.com/istoehoutroexemplo/oi) como base para o grupo compreender a implementação da função X dentro da linguagem em questão.
   
 ## Passo a passo
 Passos que o grupo realizou para criar, implementar ou projetar o projeto. É importante descrever pelo menos o mais importante para que outras pessoas compreendam como o grupo conseguiu realizar o projeto, quais as atividades feitas, etc, e possam ter meios compreender como reproduzir o projeto, se assim fosse necessário.
@@ -59,6 +59,8 @@ Passos necessários para executar, rodar ou testar seu projeto. Vocês podem seg
 Por ter sua detecção baseado apenas em assinaturas, o MultiVXRemover não é capaz de detectar os chamados malwares metamórficos/polimórfimos ou ameaças recentes. De forma resumida, malwares que mudam sua forma (sua assinatura) "espontaneamente" ou que acabaram de serem criados não serão detectados por regras estáticas, que ficam muito limitadas aos softwares que as deram origem. Soluções de antivírus modernas incluem análise heurística e em tempo real da atividade de cada software no PC, se concentrando mais **na ação** do programa do que no **seu código**. 
 
 A compilação das regras YARA geralmente será rápida, porém, o download e criação do banco de dados SQL dos hashes pode levar algum tempo, cerca de 30 minutos. A detecção com hashes também sofre do mesmo problema, demorando relativamente bastante tempo para comparação do hash de um arquivo com o banco de dados. Tentativas de otimização foram feitas para acelerar o processo, sendo que a organização em banco de dados sqlite foi a mais promissora.
+
+A organização em forma de classes possui um alto "acoplamento" entre as classes, o que torna o código mais difícil de ser expandido futuramente
 
 ## Autores
 * [Rafael Barbeta](https://github.com/rafaelbarbeta)
