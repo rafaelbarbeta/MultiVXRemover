@@ -79,12 +79,35 @@ A execução é bastante direta, apenas digite:
 ```bash
 pyhton3 Main.py
 ```
-E o programa estara em execução. Adicione as regras incluidas no app:
+E o programa estará em execução. Adicione as regras incluidas no app:
 ```
 addRules rawRules
 ```
 O program suporta adição constante de novas regras. Para fins de teste, vamos inserir uma [regra para detectar o falso vírus EICAR](https://github.com/airbnb/binaryalert/blob/master/rules/public/eicar.yara)
 
+Em outro terminal, insira essa comando para gerar o "virus":
+```bash
+mkdir teste
+echo 'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*' > ./teste/eicar
+```
+E scanear com:
+```bash
+scan teste
+```
+
+O "vírus" será neutralizado e colocado em quarentena. No caso, ele simplesmente é codificado para base64, um formato puramente textual e não executável. Outras informações são adicionadas para permitir sua restauração no mesmo local onde foi deletado
+
+Veja sua quarentena com:
+E scanear com:
+```bash
+viewQuarantine
+```
+Restaure o eicar
+```bash
+restore eicar
+```
+
+O scan de hash funciona da mesma forma. Atente-se com uma demora extra para verificar os arquivos, uma vez que será necessário comparar o hash com uma grande base de dados.
 
 ## Bugs/problemas conhecidos
 Por ter sua detecção baseado apenas em assinaturas, o MultiVXRemover não é capaz de detectar os chamados malwares metamórficos/polimórfimos ou ameaças recentes. De forma resumida, malwares que mudam sua forma (sua assinatura) "espontaneamente" ou que acabaram de serem criados não serão detectados por regras estáticas, que ficam muito limitadas aos softwares que as deram origem. Soluções de antivírus modernas incluem análise heurística e em tempo real da atividade de cada software no PC, se concentrando mais **na ação** do programa do que no **seu código**. 
@@ -92,6 +115,8 @@ Por ter sua detecção baseado apenas em assinaturas, o MultiVXRemover não é c
 A compilação das regras YARA geralmente será rápida, porém, o download e criação do banco de dados SQL dos hashes pode levar algum tempo, cerca de 30 minutos. A detecção com hashes também sofre do mesmo problema, demorando relativamente bastante tempo para comparação do hash de um arquivo com o banco de dados. Tentativas de otimização foram feitas para acelerar o processo, sendo que a organização em banco de dados sqlite foi a mais promissora.
 
 A organização em forma de classes possui um alto "acoplamento" entre as classes, o que torna o código mais difícil de ser expandido futuramente
+
+A quarentena utilizando o scan com regra yara está um pouco confusa. A quarentena é utilizada diretamente pelo Scanner, mas é o Main que deveria fazer isso.
 
 ## Autores
 * [Rafael Barbeta](https://github.com/rafaelbarbeta)
@@ -101,10 +126,4 @@ A organização em forma de classes possui um alto "acoplamento" entre as classe
 Encoraja-se fortemente o uso dessa ferramenta em um ambiente controlado e seguro como uma máquina virtual. Esse projeto NÃO substitue uma antivírus profissional. Os criadores não serão responsáveis por quaisqueres incidentes que ocorram devido ao uso desse software.
 
 ## Imagens/screenshots
-É necessário colocar pelo menos 3 imagens/screenshots do projeto, porém fiquem a vontade para colocar mais, a medida do que vocês acharem legal para ilustrar o projeto.
 
-Para colocar imagens no Readme do Github, vocês podem usar o seguinte comando (abrir este Readme no modo raw ou como txt):
-
-![Imagem](https://github.com/hackoonspace/Hackoonspace-template/blob/master/exemplo.png)
-
-É preferível que vocês usem imagens hospedadas no próprio GitHub do projeto. É só referenciar o link delas no comando acima.

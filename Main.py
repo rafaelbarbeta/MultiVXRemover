@@ -29,7 +29,6 @@ def main():
                         print("Threats Detected!")
                         for key, value in fileMatches.items():
                             print(f"{key} is {value}")
-                            quar.quarantineFile(key)
                         print("All detected threats have been quarantined")
                     else:
                         print("No threats found")
