@@ -7,9 +7,9 @@ import yara
 
 def main():
     rmng = RulesManagement.RulesManagement(os.getcwd())
-    scan = Scanner.Scanner(rmng,False)
     hashScan = HashScan.HashScan(os.getcwd())
     quar = Quarantine.Quarantine(os.getcwd())
+    scan = Scanner.Scanner(rmng,quar)
     print("MultiVXRemover : Wipe evil software off your computer!")
     while True:
             try :

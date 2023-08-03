@@ -19,7 +19,7 @@ class Scanner:
             match = singleRuleFile.match(filePath,callback=self.malwareFound,which_callbacks=yara.CALLBACK_MATCHES)
             if len(match) != 0:
                 self.dictMatches.update({file : match[0]})
-                self.quarantineFile(file)
+                self.quarantine.quarantineFile(file)
                 return (file,match[0])
         return
 

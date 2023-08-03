@@ -15,8 +15,8 @@ nome_comando < parâmetro >
 As ações disponíveis são:
 
 ## Pré-requisitos e recursos utilizados
-O MultiVXRemover foi feito inteiramente em pyhton, sendo necesssário um interpretador da linguagem para poder executar o programa.
-Foram utiladaz as seguintes bibliotecas
+O MultiVXRemover foi feito inteiramente em python, sendo necesssário um interpretador da linguagem para poder executar o programa.
+Foram utilizadas as seguintes bibliotecas
 * OS, para operar com arquivos. Padrão do python
 * lib-yara, biblioteca que da suporte as regras yara
 * yara-python, integração da biblioteca com python
@@ -24,36 +24,67 @@ Foram utiladaz as seguintes bibliotecas
 
 O projeto inclui um set de regras YARA obtidos da Reversing LABS. O projeto original pode ser encontrado [nesse link](https://github.com/reversinglabs/reversinglabs-yara-rules)
 
-Além disso, inclui um "scraper" downloader.sh para hashes MD5 do site vírus share. Há uma coleção **gigantesca** de assinaturas de vírus coletadas da internet. O download de todos os arquivos pode demorar algum tempo, mas se desejar, adicione sesu próprios hashes para teste.
+Além disso, inclui um "scraper" escrito em bash "downloader.sh" para hashes MD5 do site vírus share. Há uma coleção **gigantesca** de assinaturas de vírus coletadas da internet. O download de todos os arquivos pode demorar algum tempo, mas se desejar, adicione sesu próprios hashes para teste.
   
 ## Passo a passo
-Passos que o grupo realizou para criar, implementar ou projetar o projeto. É importante descrever pelo menos o mais importante para que outras pessoas compreendam como o grupo conseguiu realizar o projeto, quais as atividades feitas, etc, e possam ter meios compreender como reproduzir o projeto, se assim fosse necessário.
+Para a realizar o projeto, fizemos a seguinte sequência de etapas:
+1. Pesquisa inicial sobre o funcionamento de malwares e sua detecção:
+ Aqui entra nosso estudo de caso sobre o vírus Neshta. O vírus em particular continha uma string bastante única que o identificava em relação a outros softwares. Foi aqui que descobrimos o mecanismo de deteção por assinatura dos antivírus. 
+2. Passamos para a implementação:
+ Seria necessário alguma biblioteca que permitisse executar ações de "match" contra arquivos. No ramo de segurança, a biblioteca YARA é bastante utilizada para esse fim
+3. Projeto do programa:
+ Seguimos o paradigma de programação orientado a objetos. Para isso, criamos um programa principal Main.py responsável apenas por comunicação com usuário. O Main integra os outros  módulos. Entre eles temos:
+  * RulesManagement, responsável por gerenciar as regras YARA
+  * Scanner, que analisa um diretório e retorna uma "associação" entre caminho do arquvo com o nome técnico do malware detectado (se houver)
+  * Quarantine, que remove um arquivo e o transforma em base64, de forma que ele não seja executável
+  * HashScan, que faz um scan alternativo com hashes. Utiliza o banco de dados sqlite tentando encontrar um "match"
+  Diagrama de classes abaixo 
+  ![diagrama de classes](images/UMLMultiVXRemover.drawio.png)
+4. Codificação:
+  Uma vez definida a estrutura passamos para a implmentação. Utilizamos [a documentação oficial do YARA](https://yara.readthedocs.io/en/stable/yarapython.html) e do [python](https://docs.python.org/3/library/os.html) para nos auxiliar
 
-Se possível, é legal citar o nome dos arquivos implementados, se forem poucos. Por exemplo, se o seu projeto tiver 4 arquivos, cada um com uma função, citar o nome deles na parte do passo a passo correspondente. Se forem muitos arquivos para uma mesma coisa, não tem problema, podem deixar sem ou deixar apenas o nome da pasta.
-
-### Exemplo:
-
-1. Baixamos o material disponível em [Material](https://materialdeexemplodohackerspace.com.br)
-2. Estudamos como o código do material anterior funciona
-3. Implementamos um programa que se comunicasse com o código compreendido (comunicacao.c e comunicacao.h)
-4. Implementamos uma interface gráfica para utilizar o programa de comunicação de forma mais intuitiva.
+### Análise Neshta
 
 ## Instalação
-Passos necessários para instalar ou recriar seu projeto, se assim for necessário. A descrição dos passos não precisa ser complexa. É necessário apenas o mais importante para que outras pessoas saibam como fazê-lo.
-
-### Exemplos:
-a)
-  ```
-  Execute o comando X Y Z, no terminal, na pasta do projeto
-  ```
-b)
-  1. Abra a pasta 
-  2. Execute o comando A B C no terminal
-  3. Compile os arquivos X, Y e Z juntos
-  4. Crie um arquivo W.txt de entrada
+Alguns preparativos precisam ser feitos para que seja possível executar o programa. Os passos serão dados para o Linux, supõe-se que esse aplicativo será executado em um ambiente seguro e desconectado da internet e em um máquina virtual.
+1. Instale o yara:
+```bash
+sudo apt install yara
+```
+2. Instale o gerenciador de pacotes do python, o pip:
+```bash
+sudo apt install python3-pip
+```
+3. Instale o módulo yara para o pyhton:
+```bash
+pip install yara-python
+```
+Obs: talvez seja necessário installar libssl-dev primeiro, caso dê erro
+4. Baixe o conjunto de hashes do virusshare, basta executar downloader.sh
+```bash
+./donwloader.sh 
+```
+Obs: essa etapa pode demorar uns 30 minutos. Interrompa a qualquer momento o download se não quiser baixar todos os hashes
+5. Monte o banco de dados sqlite. Essa etapa é bem mais rápida que a primeira
+```bash
+python3 hashDBBuilder.py
+```
+6. Execute o programa para atestar se tudo está certo:
+```bash
+pyhton3 Main.py
+```
 
 ## Execução
-Passos necessários para executar, rodar ou testar seu projeto. Vocês podem seguir o mesmo modelo dos exemplos de Instalação.
+A execução é bastante direta, apenas digite:
+```bash
+pyhton3 Main.py
+```
+E o programa estara em execução. Adicione as regras incluidas no app:
+```
+addRules rawRules
+```
+O program suporta adição constante de novas regras. Para fins de teste, vamos inserir uma [regra para detectar o falso vírus EICAR](https://github.com/airbnb/binaryalert/blob/master/rules/public/eicar.yara)
+
 
 ## Bugs/problemas conhecidos
 Por ter sua detecção baseado apenas em assinaturas, o MultiVXRemover não é capaz de detectar os chamados malwares metamórficos/polimórfimos ou ameaças recentes. De forma resumida, malwares que mudam sua forma (sua assinatura) "espontaneamente" ou que acabaram de serem criados não serão detectados por regras estáticas, que ficam muito limitadas aos softwares que as deram origem. Soluções de antivírus modernas incluem análise heurística e em tempo real da atividade de cada software no PC, se concentrando mais **na ação** do programa do que no **seu código**. 
