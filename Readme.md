@@ -3,7 +3,7 @@
 ## Conceito do projeto
 Projeto de mini-antívirus, que consegue detectar assinaturas de malwares conhecidos assim como colocá-los em "quarentena". Foi feito inteiramente em python com ajuda da biblioteca de regras YARA. Adicionalmente,inclui uma breve pesquisa sobre o vírus de computador conhecido como Neshta, com sua análise dinâmica e estática.
 
-Todos os softwares desenvolvidos contém padrões exclusivos, que permitem indentificá-los em meio a tantos outros. O mesmo acontece com malwares. Um dos mecanismos mais úteis dos antivírus modernos é justamente a detecção por assinatura, que consiste em catalogar diversos desses "padrões" de antivírus em uma base de dados e compará-los com os arquivos presentes no computador do usuário. Um "match" provavelmente significa que aquele arquivo é um malware já conhecido e que portando desve ser isolado pela segurança do cliente.
+Todos os softwares desenvolvidos contém padrões exclusivos, que permitem indentificá-los em meio a tantos outros. O mesmo acontece com malwares. Um dos mecanismos mais úteis dos antivírus modernos é justamente a detecção por assinatura, que consiste em catalogar diversos desses "padrões" de antivírus em uma base de dados e compará-los com os arquivos presentes no computador do usuário. Um "match" provavelmente significa que aquele arquivo é um malware já conhecido e que portando deve ser isolado pela segurança do cliente.
 
 Dois tipos de assinatura são utilizados para detecção de software maliciosos nesse projeto:
 * Regras YARA: consiste em um conjunto de expressões regulares aplicadas ao binário. Consegue dar "match" tanto em bytes "raw", strings de texto e combinar os diferentes "matches" que ocorreram com expressões lógicas. É o mecanismo principal de detecção. Consegue detectar malwares e possíveis "variantes" desse software malicioso. 
@@ -11,8 +11,6 @@ Dois tipos de assinatura são utilizados para detecção de software maliciosos 
 
 A interface do programa é inteiramente textual. Apoós a execução, será fornecido um terminal para inserção dos comandos, que seguem o padrão:
 nome_comando < parâmetro >
-
-As ações disponíveis são:
 
 ## Pré-requisitos e recursos utilizados
 O MultiVXRemover foi feito inteiramente em python, sendo necesssário um interpretador da linguagem para poder executar o programa.
@@ -29,7 +27,7 @@ Além disso, inclui um "scraper" escrito em bash "downloader.sh" para hashes MD5
 ## Passo a passo
 Para a realizar o projeto, fizemos a seguinte sequência de etapas:
 1. Pesquisa inicial sobre o funcionamento de malwares e sua detecção:
- Aqui entra nosso estudo de caso sobre o vírus Neshta. O vírus em particular continha uma string bastante única que o identificava em relação a outros softwares. Foi aqui que descobrimos o mecanismo de deteção por assinatura dos antivírus. 
+ Aqui entra nosso estudo de caso sobre o vírus Neshta. O vírus em particular continha uma string bastante única que o identificava em relação a outros softwares. Foi aqui que descobrimos o mecanismo de deteção por assinatura dos antivírus. As análises podem ser vistas na pasta Virus.Win32.Neshta.A Malware analysis
 2. Passamos para a implementação:
  Seria necessário alguma biblioteca que permitisse executar ações de "match" contra arquivos. No ramo de segurança, a biblioteca YARA é bastante utilizada para esse fim
 3. Projeto do programa:
@@ -42,8 +40,6 @@ Para a realizar o projeto, fizemos a seguinte sequência de etapas:
   ![diagrama de classes](images/UMLMultiVXRemover.drawio.png)
 4. Codificação:
   Uma vez definida a estrutura passamos para a implmentação. Utilizamos [a documentação oficial do YARA](https://yara.readthedocs.io/en/stable/yarapython.html) e do [python](https://docs.python.org/3/library/os.html) para nos auxiliar
-
-### Análise Neshta
 
 ## Instalação
 Alguns preparativos precisam ser feitos para que seja possível executar o programa. Os passos serão dados para o Linux, supõe-se que esse aplicativo será executado em um ambiente seguro e desconectado da internet e em um máquina virtual.
@@ -83,14 +79,14 @@ E o programa estará em execução. Adicione as regras incluidas no app:
 ```
 addRules rawRules
 ```
-O program suporta adição constante de novas regras. Para fins de teste, vamos inserir uma [regra para detectar o falso vírus EICAR](https://github.com/airbnb/binaryalert/blob/master/rules/public/eicar.yara)
+O programa suporta adição constante de novas regras. Para fins de teste, vamos inserir uma [regra para detectar o falso vírus EICAR](https://github.com/airbnb/binaryalert/blob/master/rules/public/eicar.yara)
 
 Em outro terminal, insira essa comando para gerar o "virus":
 ```bash
 mkdir teste
 echo 'X5O!P%@AP[4\PZX54(P^)7CC)7}$EICAR-STANDARD-ANTIVIRUS-TEST-FILE!$H+H*' > ./teste/eicar
 ```
-E scanear com:
+E escanear com:
 ```bash
 scan teste
 ```
@@ -98,7 +94,6 @@ scan teste
 O "vírus" será neutralizado e colocado em quarentena. No caso, ele simplesmente é codificado para base64, um formato puramente textual e não executável. Outras informações são adicionadas para permitir sua restauração no mesmo local onde foi deletado
 
 Veja sua quarentena com:
-E scanear com:
 ```bash
 viewQuarantine
 ```
@@ -126,4 +121,6 @@ A quarentena utilizando o scan com regra yara está um pouco confusa. A quarente
 Encoraja-se fortemente o uso dessa ferramenta em um ambiente controlado e seguro como uma máquina virtual. Esse projeto NÃO substitue uma antivírus profissional. Os criadores não serão responsáveis por quaisqueres incidentes que ocorram devido ao uso desse software.
 
 ## Imagens/screenshots
-
+![HashScan](images/hashScan.png)
+![Virus](images/virus.png)
+![Quarantine](images/quarantine.png)
