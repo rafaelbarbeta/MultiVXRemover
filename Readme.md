@@ -3,7 +3,7 @@
 ## Conceito do projeto
 Projeto de mini-antívirus, que consegue detectar assinaturas de malwares conhecidos assim como colocá-los em "quarentena". Foi feito inteiramente em python com ajuda da biblioteca de regras YARA. Adicionalmente,inclui uma breve pesquisa sobre o vírus de computador conhecido como Neshta, com sua análise dinâmica e estática.
 
-Todos os softwares desenvolvidos contém padrões exclusivos, que permitem indentificá-los em meio a tantos outros. O mesmo acontece com malwares. Um dos mecanismos mais úteis dos antivírus modernos é justamente a detecção por assinatura, que consiste em catalogar diversos desses "padrões" de antivírus em uma base de dados e compará-los com os arquivos presentes no computador do usuário. Um "match" provavelmente significa que aquele arquivo é um malware já conhecido e que portando deve ser isolado pela segurança do cliente.
+Todos os softwares desenvolvidos contém padrões exclusivos, que permitem indentificá-los em meio a tantos outros. O mesmo acontece com malwares. Um dos mecanismos mais úteis dos antivírus modernos é justamente a detecção por assinatura, que consiste em catalogar diversos desses "padrões" de vírus em uma base de dados e compará-los com os arquivos presentes no computador do usuário. Um "match" provavelmente significa que aquele arquivo é um malware já conhecido e que portando deve ser isolado pela segurança do cliente.
 
 Dois tipos de assinatura são utilizados para detecção de software maliciosos nesse projeto:
 * Regras YARA: consiste em um conjunto de expressões regulares aplicadas ao binário. Consegue dar "match" tanto em bytes "raw", strings de texto e combinar os diferentes "matches" que ocorreram com expressões lógicas. É o mecanismo principal de detecção. Consegue detectar malwares e possíveis "variantes" desse software malicioso. 
@@ -42,7 +42,7 @@ Para a realizar o projeto, fizemos a seguinte sequência de etapas:
   Uma vez definida a estrutura passamos para a implmentação. Utilizamos [a documentação oficial do YARA](https://yara.readthedocs.io/en/stable/yarapython.html) e do [python](https://docs.python.org/3/library/os.html) para nos auxiliar
 
 ## Instalação
-Alguns preparativos precisam ser feitos para que seja possível executar o programa. Os passos serão dados para o Linux, supõe-se que esse aplicativo será executado em um ambiente seguro e desconectado da internet e em um máquina virtual.
+Alguns preparativos precisam ser feitos para que seja possível executar o programa. Os passos serão dados para o Linux, supõe-se que esse aplicativo será executado em um ambiente seguro, desconectado da internet e em uma máquina virtual.
 1. Instale o yara:
 ```bash
 sudo apt install yara
@@ -61,7 +61,7 @@ Obs: talvez seja necessário installar libssl-dev primeiro, caso dê erro
 ./donwloader.sh 
 ```
 Obs: essa etapa pode demorar uns 30 minutos. Interrompa a qualquer momento o download se não quiser baixar todos os hashes
-5. Monte o banco de dados sqlite. Essa etapa é bem mais rápida que a primeira
+md5. Monte o banco de dados sqlite. Essa etapa é bem mais rápida que a primeira
 ```bash
 python3 hashDBBuilder.py
 ```
@@ -117,8 +117,8 @@ A quarentena utilizando o scan com regra yara está um pouco confusa. A quarente
 * [Rafael Barbeta](https://github.com/rafaelbarbeta)
 * [Victor Motta](https://github.com/maxproyt)
 
-## Demais anotações e referências (opcional)
-Encoraja-se fortemente o uso dessa ferramenta em um ambiente controlado e seguro como uma máquina virtual. Esse projeto NÃO substitue uma antivírus profissional. Os criadores não serão responsáveis por quaisqueres incidentes que ocorram devido ao uso desse software.
+## Demais anotações e referências
+Encoraja-se fortemente o uso dessa ferramenta em um ambiente controlado e seguro como uma máquina virtual. Esse projeto NÃO substitue um antivírus profissional. Os criadores não serão responsáveis por quaisqueres incidentes que ocorram devido ao uso desse software.
 
 ## Imagens/screenshots
 ![HashScan](images/hashScan.png)
