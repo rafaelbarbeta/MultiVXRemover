@@ -67,13 +67,13 @@ python3 hashDBBuilder.py
 ```
 6. Execute o programa para atestar se tudo está certo:
 ```bash
-pyhton3 Main.py
+python3 Main.py
 ```
 
 ## Execução
 A execução é bastante direta, apenas digite:
 ```bash
-pyhton3 Main.py
+python3 Main.py
 ```
 E o programa estará em execução. Adicione as regras incluidas no app:
 ```
